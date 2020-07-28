@@ -1,13 +1,16 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 
-export const typeOrmConfig: TypeOrmModuleOptions = {
+export const getYypeOrmConfig = (
+  configService: ConfigService,
+): TypeOrmModuleOptions => ({
   type: 'postgres',
-  host: 'localhost',
+  host: configService.get<string>('host'),
   port: 5432,
-  username: 'Park',
-  password: 'parks0320',
-  database: 'taskmanagement',
+  username: configService.get<string>('user'),
+  password: configService.get<string>('password'),
+  database: configService.get<string>('db'),
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: true,
-  retryAttempts: 1
-}
+  retryAttempts: 1,
+});
